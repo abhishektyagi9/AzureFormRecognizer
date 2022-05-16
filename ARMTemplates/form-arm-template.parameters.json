@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageaccountname": {
+            "value": "formstore"
+        },
+        "webappname": {
+            "value": "formweb"
+        },
+        "functionappname": {
+            "value": "funcform"
+        },
+        "funchostingpan": {
+            "value": "funncapp1formreconplan" 
+        },
+        "formrecognizerservicename": {
+            "value": "formdeploymentdemo022" 
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "apiType": {
+            "value": "FormRecognizer"
+        },
+        "formrecognizersku": {
+            "value": "S0"
+        },
+        "appserviceplanname": {
+            "value": "appplandemo" 
+        },
+        "blobcontainername": {
+            "value": "forms" 
+        },"storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "linuxFxVersion": {
+            "value": "DOTNET|6.0"
+        },
+        "functionWorkerRuntime": {
+            "value": "dotnet"
+        },
+        "cosmosdbaccountname": {
+            "value" :"cosmosforms" 
+        }
+
+    }
+}
