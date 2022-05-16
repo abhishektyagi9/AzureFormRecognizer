@@ -34,7 +34,11 @@ namespace funcformrecognizer
                     await operation.WaitForCompletionAsync();
 
                     AnalyzeResult result = operation.Value;
+                //Adding results to cosmos db
+                if (result != null)
+                {
                     await analysisresults.AddAsync(result);
+                }
                 }
                 catch (Exception ex)
                 {
