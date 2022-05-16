@@ -8,7 +8,7 @@ This reference architecture shows how to deploy an end-to-end form admissions fo
 
 Before you hit the deploy button, make sure you review the details about the services deployed.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fadebargis%2Fadmissions-automation-non-profit%2Fmain%2Ftemplates%2Fadmissions-process-template.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://github.com/abhishektyagi9/AzureFormRecognizer/blob/master/ARMTemplates/form-arm-template.json)
 
 Once the resource deployed, you will need to deploy the functions to the Function App (at this time - could be further automated).
 
