@@ -1,36 +1,36 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "storageaccountname": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of storage accounts"
-            },
-            "defaultValue":""
-        },
-        "blobcontainername": {
-            "type": "string",
-            "metadata": {
-                "description": "name of blob container to save forms"
-            }
-        },
-
-        "webappname": {
-            "type": "string",
-            "metadata": {
-                "description": "name of web application for uploading forms images"
-            }
-        },
-         "appserviceplanname": {
-             "type": "string",
-             "metadata": {
-                 "description": "app service plan to deploy webapp"
-             }
-         },
-          "storageAccountType": {
+  "parameters": {
+    "storageaccountname": {
       "type": "string",
-           "allowedValues": [
+      "metadata": {
+        "description": "Name of storage accounts"
+      },
+      "defaultValue": ""
+    },
+    "blobcontainername": {
+      "type": "string",
+      "metadata": {
+        "description": "name of blob container to save forms"
+      }
+    },
+    "appserviceplanname": {
+      "type": "string",
+      "metadata": {
+        "description": "app service plan to deploy webapp"
+      }
+    },
+
+    "webappname": {
+      "type": "string",
+      "metadata": {
+        "description": "name of web application for uploading forms images"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "allowedValues": [
         "Standard_LRS",
         "Standard_GRS",
         "Standard_RAGRS"
@@ -39,19 +39,19 @@
         "description": "Storage Account type"
       }
     },
-       "functionappname": {
+    "functionappname": {
       "type": "string",
       "metadata": {
         "description": "The name of the Azure Function app."
       }
     },
-         "formrecognizerservicename": {
-             "type": "string",
-             "metadata": {
-                 "description": "Form recognizer service to process forms"
-             }
-         },
-           "functionWorkerRuntime": {
+    "formrecognizerservicename": {
+      "type": "string",
+      "metadata": {
+        "description": "Form recognizer service to process forms"
+      }
+    },
+    "functionWorkerRuntime": {
       "type": "string",
       "allowedValues": [
         "dotnet",
@@ -71,37 +71,40 @@
     },
     "linuxFxVersion": {
       "type": "string",
+      "allowedValues": [
+        "DOTNET|6.0",
+        "DOTNET|3.1"
+      ],
       "metadata": {
         "description": "Required for Linux app to represent runtime stack in the format of 'runtime|runtimeVersion'. For example: 'python|3.9'"
       }
-    
-    },
-         "location": {
-             "type": "string",
-             "metadata": {
-                 "description": "location for deploying resources"
-             }
-         },
-         "apiType": {
-             "type": "string",
-             "metadata": {
-                 "description": "API for form recognizer"
-             }
-         },
-         "formrecognizersku": {
-             "type": "string",
-             "metadata": {
-                 "description": "Sku for form recognizer"
-             }
-         },
-        "cosmosdbaccountname": {
-          "type": "string",
-          "metadata": {
-            "description": "description"
-          }
-        }
 
     },
+    "apiType": {
+      "type": "string",
+      "allowedValues": [ "FormRecognizer" ],
+      "metadata": {
+        "description": "API for form recognizer"
+      }
+    },
+    "formrecognizersku": {
+      "type": "string",
+      "allowedValues": [
+        "F0",
+        "S0"
+      ],
+      "metadata": {
+        "description": "Sku for form recognizer"
+      }
+    },
+    "cosmosdbaccountname": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    }
+
+  },
     "functions": [],
     "variables": {
           "hostingPlanName": "[parameters('funchostingpan')]",
@@ -114,20 +117,20 @@
     
     },
     "resources": [
-        {
-            "name": "[variables('storageAccountName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2021-04-01",
-            "tags": {
-                "displayName": ","
-            },
-            "location": "[parameters('location')]",
-            "kind": "StorageV2",
-            "sku": {
-                "name": "[parameters('storageAccountType')]",
-                "tier": "Standard"
-            }
+      {
+        "name": "[variables('storageAccountName')]",
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2021-04-01",
+        "tags": {
+          "displayName": ","
         },
+        "location": "[resourceGroup().location]",
+        "kind": "StorageV2",
+        "sku": {
+          "name": "[parameters('storageAccountType')]",
+          "tier": "Standard"
+        }
+      },
         {
           "name": "[concat(variables('storageaccountname'),'/default/',parameters('blobcontainername'))]",
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
@@ -171,120 +174,124 @@
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appserviceplanname'))]"
             }
         },
-     {
-            "type": "Microsoft.DocumentDb/databaseAccounts",
-            "apiVersion": "2022-02-15-preview",
-            "name": "[variables('cosmosdbaccountname')]",
-            "location": "[parameters('location')]",
-            "tags": {
-              
-                "hidden-cosmos-mmspecial": ""
-            },
-            "kind": "GlobalDocumentDB",
-            "properties": {
-                "databaseAccountOfferType": "Standard",
-                "locations": [
-                    {
-                        "id": "[concat(variables('cosmosdbaccountname'), '-', parameters('location'))]",
-                        "failoverPriority": 0,
-                        "locationName": "[parameters('location')]"
-                    }
-                ],
-                "backupPolicy": {
-                    "type": "Periodic",
-                    "periodicModeProperties": {
-                        "backupIntervalInMinutes": 240,
-                        "backupRetentionIntervalInHours": 8,
-                        "backupStorageRedundancy": "Local"
-                    }
-                },
-                "isVirtualNetworkFilterEnabled": false,
-                "virtualNetworkRules": [],
-                "ipRules": [],
-                "dependsOn": [],
-                "capabilities": [
-                    {
-                        "name": "EnableServerless"
-                    }
-                ],
-                "enableFreeTier": false
-            }
+      {
+        "type": "Microsoft.DocumentDb/databaseAccounts",
+        "apiVersion": "2022-02-15-preview",
+        "name": "[variables('cosmosdbaccountname')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+
+          "hidden-cosmos-mmspecial": ""
         },
-        {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2021-02-01",
-      "name": "[variables('hostingPlanName')]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "Y1",
-        "tier": "Dynamic",
-        "size": "Y1",
-        "family": "Y"
-      },
-      "properties": {
-        "computeMode": "Dynamic",
-        "reserved": true
-      }
-    },{
-      "type": "microsoft.insights/components",
-      "apiVersion": "2020-02-02",
-      "name": "[variables('applicationInsightsName')]",
-      "location": "[parameters('location')]",
-      "tags": {
-        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('applicationInsightsName')))]": "Resource"
-      },
-      "properties": {
-        "Application_Type": "web"
-      },
-      "kind":"web"
-    },
-    {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2021-02-01",
-      "name": "[variables('functionAppName')]",
-      "location": "[parameters('location')]",
-      "kind": "functionapp,linux",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
-      ],
-      "properties": {
-        "reserved": true,
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-        "siteConfig": {          
-          "linuxFxVersion": "[parameters('linuxFxVersion')]",
-          "appSettings": [
+        "kind": "GlobalDocumentDB",
+        "properties": {
+          "databaseAccountOfferType": "Standard",
+          "locations": [
             {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(resourceId('Microsoft.Insights/components', variables('functionAppName')), '2015-05-01').InstrumentationKey]"
-            },
-            {
-              "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
-            },
-            {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~4"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "[parameters('functionWorkerRuntime')]"
+              "id": "[concat(variables('cosmosdbaccountname'), '-', resourceGroup().location)]",
+              "failoverPriority": 0,
+              "locationName": "[resourceGroup().location]"
             }
-          ]    
-        }}},             {
-            "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2021-04-30",
-            "name": "[variables('formrecognizerservicename')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "[parameters('formrecognizersku')]"
-            },
-            "kind": "[parameters('apiType')]",
-            "properties": {
-                "customSubDomainName": "[toLower(variables('formrecognizerservicename'))]"
+          ],
+          "backupPolicy": {
+            "type": "Periodic",
+            "periodicModeProperties": {
+              "backupIntervalInMinutes": 240,
+              "backupRetentionIntervalInHours": 8,
+              "backupStorageRedundancy": "Local"
             }
+          },
+          "isVirtualNetworkFilterEnabled": false,
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "dependsOn": [],
+          "capabilities": [
+            {
+              "name": "EnableServerless"
+            }
+          ],
+          "enableFreeTier": false
         }
+      },
+      {
+        "type": "Microsoft.Web/serverfarms",
+        "apiVersion": "2021-02-01",
+        "name": "[variables('hostingPlanName')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "Y1",
+          "tier": "Dynamic",
+          "size": "Y1",
+          "family": "Y"
+        },
+        "properties": {
+          "computeMode": "Dynamic",
+          "reserved": true
+        }
+      },
+      {
+        "type": "microsoft.insights/components",
+        "apiVersion": "2020-02-02",
+        "name": "[variables('applicationInsightsName')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('applicationInsightsName')))]": "Resource"
+        },
+        "properties": {
+          "Application_Type": "web"
+        },
+        "kind": "web"
+      },
+      {
+        "type": "Microsoft.Web/sites",
+        "apiVersion": "2021-02-01",
+        "name": "[variables('functionAppName')]",
+        "location": "[resourceGroup().location]",
+        "kind": "functionapp,linux",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+          "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+        ],
+        "properties": {
+          "reserved": true,
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+          "siteConfig": {
+            "linuxFxVersion": "[parameters('linuxFxVersion')]",
+            "appSettings": [
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference(resourceId('Microsoft.Insights/components', variables('functionAppName')), '2015-05-01').InstrumentationKey]"
+              },
+              {
+                "name": "AzureWebJobsStorage",
+                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
+              },
+              {
+                "name": "FUNCTIONS_EXTENSION_VERSION",
+                "value": "~4"
+              },
+              {
+                "name": "FUNCTIONS_WORKER_RUNTIME",
+                "value": "[parameters('functionWorkerRuntime')]"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2021-04-30",
+        "name": "[variables('formrecognizerservicename')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "[parameters('formrecognizersku')]"
+        },
+        "kind": "[parameters('apiType')]",
+        "properties": {
+          "customSubDomainName": "[toLower(variables('formrecognizerservicename'))]"
+        }
+      }
             
                ],
     "outputs": {}

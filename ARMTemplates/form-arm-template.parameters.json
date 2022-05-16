@@ -17,9 +17,6 @@
         "formrecognizerservicename": {
             "value": "formdeploymentdemo022" 
         },
-        "location": {
-            "value": "eastus"
-        },
         "apiType": {
             "value": "FormRecognizer"
         },
