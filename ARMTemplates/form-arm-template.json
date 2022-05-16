@@ -45,12 +45,7 @@
         "description": "The name of the Azure Function app."
       }
     },
-    "formrecognizerservicename": {
-      "type": "string",
-      "metadata": {
-        "description": "Form recognizer service to process forms"
-      }
-    },
+
     "functionWorkerRuntime": {
       "type": "string",
       "allowedValues": [
@@ -79,6 +74,12 @@
         "description": "Required for Linux app to represent runtime stack in the format of 'runtime|runtimeVersion'. For example: 'python|3.9'"
       }
 
+    },
+    "formrecognizerservicename": {
+      "type": "string",
+      "metadata": {
+        "description": "Form recognizer service to process forms"
+      }
     },
     "apiType": {
       "type": "string",
