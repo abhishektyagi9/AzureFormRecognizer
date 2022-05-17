@@ -10,6 +10,9 @@ Before you hit the deploy button, make sure you review the details about the ser
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fabhishektyagi9%2FAzureFormRecognizer%2Fmaster%2FARMTemplates%2Fformtemplatedeployment.json)
 
+
+[![Deploy to Azure Government](https://aka.ms/deploytoazurebutton)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fabhishektyagi9%2FAzureFormRecognizer%2Fmaster%2FARMTemplates%2Fformtemplatedeployment.json)
+
 Once the resource deployed, you will need to deploy the functions to the Function App (at this time - could be further automated).
 
 > **Important:** This deployment accelerator implements some service features that are still in Public Preview. Please consider those before you plan for a production deployment.
