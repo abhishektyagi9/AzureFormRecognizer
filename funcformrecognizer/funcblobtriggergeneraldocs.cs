@@ -18,7 +18,7 @@ namespace funcformrecognizer
             [CosmosDB(
               databaseName: "dbformrecognizer",
               collectionName: "dbformscontainer",
-              ConnectionStringSetting = "CosmosDBConnection", CreateIfNotExists = true)] IAsyncCollector<object> analysisresults
+              ConnectionStringSetting = "CosmosDBConnection",PartitionKey ="/processingdate" ,CreateIfNotExists = true)] IAsyncCollector<object> analysisresults
           , ILogger log)
         {
 
@@ -36,13 +36,9 @@ namespace funcformrecognizer
                 await operation.WaitForCompletionAsync();
 
                 AnalyzeResult result = operation.Value;
-               // List<AnalysedDocuments> fields = new List<AnalysedDocuments>();
                 Analysisdocs dataDict = new Analysisdocs();
                 dataDict.keyvaluepair = new Dictionary<string, string>();
-                //AnalysedDocuments objAnalysisdoc = new AnalysedDocuments();
-                //objAnalysisdoc.content = result.Content;
-                //List<KeyValuePair> objlistvalue = new List<KeyValuePair>();
-                //List<Enttities> objentities = new List<Enttities>();
+          
                 for (int i = 0; i < result.KeyValuePairs.Count; i++)
                 {
 
@@ -58,6 +54,7 @@ namespace funcformrecognizer
                             }
                             else
                             {
+                                //handling duplicate keys in form if any
                                 dataDict.keyvaluepair.Add(result.KeyValuePairs[i].Key.Content + "2", result.KeyValuePairs[i].Value.Content);
                             }
 
@@ -67,29 +64,16 @@ namespace funcformrecognizer
                     catch
                     {
                         throw;
-                    }
-                 
-                    //objlistvalue.Add(objkey);
+                    }                   
 
                 }
-                //for (int i = 0; i < result.Entities.Count; i++)
-                //{
-
-                //    Enttities objkey = new Enttities();
-                //    if (result.KeyValuePairs[i].Key != null)
-                //    {
-                //        objkey.Category = Convert.ToString(result.Entities[i].Category);
-                //        objkey.SubCategory = Convert.ToString(result.Entities[i].SubCategory);
-                //        objkey.Value = Convert.ToString(result.Entities[i].Content);
-                //    }
-
-                //    objentities.Add(objkey);
-
-                //}
-                //objAnalysisdoc.keyValuePairs = objlistvalue;
-                //objAnalysisdoc.entities = objentities;
-
+                if (dataDict.keyvaluepair != null)
+                {
+                    dataDict.keyvaluepair.Add("processingdate", DateTime.Now.ToShortDateString());
+                }
                 var jsonconvert = JsonConvert.SerializeObject(dataDict.keyvaluepair);
+
+                //adding to cosmos db
 
                 await analysisresults.AddAsync(jsonconvert);
             }

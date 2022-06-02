@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="funcformrecognizer\**" />
+    <Content Remove="funcformrecognizer\**" />
+    <EmbeddedResource Remove="funcformrecognizer\**" />
+    <None Remove="funcformrecognizer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.AI.FormRecognizer" Version="3.1.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.1.0" />

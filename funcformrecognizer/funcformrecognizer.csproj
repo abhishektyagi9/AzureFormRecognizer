@@ -5,6 +5,7 @@
     <UserSecretsId>5eb59cb2-1e8b-447c-90a3-262be76d3093</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Azure.AI.FormRecognizer" Version="4.0.0-beta.3" />
     <PackageReference Include="Azure.Core" Version="1.24.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.15.0" />
