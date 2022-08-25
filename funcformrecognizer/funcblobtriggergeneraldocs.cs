@@ -26,7 +26,7 @@ namespace funcformrecognizer
             try
             {
                 string endpoint = "https://formdeploymentdemo022.cognitiveservices.azure.com/";
-                string apiKey = "2c15beb8e33f45a08704b6f159a21b3b";
+                string apiKey = "";
                 var credential = new AzureKeyCredential(apiKey);
                 var client = new DocumentAnalysisClient(new Uri(endpoint), credential);
                 //Uri fileUri = new Uri("<fileUri>");
