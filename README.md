@@ -10,7 +10,7 @@ Before you hit the deploy button, make sure you review the details about the ser
 
 Deploy to Azure Commericial[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fabhishektyagi9%2FAzureFormRecognizer%2Fmaster%2FARMTemplates%2Fformtemplatedeployment.json)
 
-
+Deploy to Azure Commericial[![Deploy to Azure](https://aka.ms/deploytoazurebutton)])https://azuredeploy.net/)
 
 
 Deploy to Azure Government  [![Deploy to Azure Government](https://aka.ms/deploytoazurebutton)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fabhishektyagi9%2FAzureFormRecognizer%2Fmaster%2FARMTemplates%2Fformtemplatedeployment.json)
