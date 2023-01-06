@@ -11,11 +11,11 @@ namespace formuploaderblob.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _loggers;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> loggers)
         {
-            _logger = logger;
+            _loggers = loggers;
         }
 
         public IActionResult Index()
